@@ -145,6 +145,12 @@ div > .book.alreadyRead {
   background-color: none;
 }
 
+.button-container {
+  display: grid;
+  justify-items: center;
+  justify-content: center;
+}
+
 .slider {
   width: 50px;
   height: 25px;
@@ -159,6 +165,7 @@ div > .book.alreadyRead {
   display: inline-block;
   width: 80px;
   height: 43px;
+  margin-left: 20px;
 }
 
 /* Hide default HTML checkbox */
@@ -214,9 +221,4 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
-}
-
-.button-container {
-  display: grid;
-  justify-items: center;
 }

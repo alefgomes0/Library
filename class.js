@@ -1,7 +1,8 @@
 /* eslint-disable max-classes-per-file */
+const myLibrary = [];
+
 class Book {
-  constructor(library, name, author, pages, read) {
-    this.library = library;
+  constructor(name, author, pages, read) {
     this.name = name;
     this.author = author;
     this.pages = pages;
@@ -9,10 +10,13 @@ class Book {
   }
 }
 
+
 class BookFactory {
-  static createBook(library, name, author, pages) {
+  static createBook(name, author, pages) {
     const readStatus = BookFactory.checkReadStatus();
-    return new Book(library, name, author, pages, readStatus);
+    const aBook = new Book(name, author, pages, readStatus);
+    myLibrary.push(aBook);
+    return aBook;
   }
   
   static checkReadStatus() {
@@ -23,15 +27,12 @@ class BookFactory {
   }
 }
 
-
 class BookCatalog {
   constructor() {
     this.form = document.querySelector('form');
-    this.library = [];
   }
 
   manageForm() {
-    this.bookShelf = document.getElementById("book-shelf");
     this.submitButton = document.querySelector("button[type='submit']");
     this.bookName = document.getElementById("name");
     this.bookAuthor = document.getElementById("author");
@@ -66,10 +67,10 @@ class BookCatalog {
     this.submitButton.addEventListener('click', (e) => {
       e.preventDefault();
       if (this.form.checkValidity()) {
-        const aBook = BookFactory.createBook(this.library, this.bookName.value, 
+        const someBook = BookFactory.createBook(this.bookName.value, 
           this.bookAuthor.value, this.bookPages.value);
-        this.library.push(aBook);
         this.clearForm();
+        this.manageBookInfo(someBook);
       }
     })
   }
@@ -81,7 +82,121 @@ class BookCatalog {
       this.clearForm();
   });
   }
-} 
+
+  manageBookInfo() {
+    this.libraryLength = myLibrary.length;
+    this.BookShelf = document.getElementById("book-shelf");
+    this.bookInfo = document.createElement("div");
+    this.bookInfo.classList.add("book");
+    this.bookInfo.setAttribute("id", this.libraryLength - 1);
+  
+    const deleteButton = document.createElement("button");
+    deleteButton.classList.add("deleteButton");
+    deleteButton.textContent = "X";
+    this.bookInfoName = document.createElement("p");
+    this.bookInfoAuthor = document.createElement("p");
+    this.bookInfoPages = document.createElement("p");
+    this.bookInfoRead = document.createElement("p");
+    this.toggleButton = this.createToggleButton();
+
+    this.bookInfo.appendChild(deleteButton);
+    this.bookInfo.appendChild(this.bookInfoName);
+    this.bookInfo.appendChild(this.bookInfoAuthor);
+    this.bookInfo.appendChild(this.bookInfoPages);
+    this.bookInfo.appendChild(this.toggleButton);
+
+    this.createToggleButton();
+    this.putBookOnDisplay();
+    this.removeBook();
+    this.modifyToggleButton();
+    this.adjustBooksId();
+    this.activateToggleButton();
+  }
+
+  createToggleButton() {
+    const div = document.createElement("div");
+    div.classList.add("button-container");
+    const paragraph = document.createElement("p");
+    paragraph.textContent = "Have you read the book?";
+    const label = document.createElement("label");
+    const toggleButton = document.createElement("input");
+    toggleButton.setAttribute("type", "checkbox");
+    toggleButton.classList.add(`toggle${myLibrary.length - 1}`, `toggleButton`);
+    const span = document.createElement("span");
+  
+    label.classList.add("switch");
+    label.appendChild(toggleButton);
+    label.appendChild(span);
+  
+    div.appendChild(paragraph);
+    div.appendChild(label);
+    span.classList.add("slider", "round");
+    return div;
+  }
+
+  putBookOnDisplay() {
+    for (let i = this.libraryLength - 1; i < this.libraryLength; i += 1) {
+      this.bookInfoName.textContent = `${myLibrary[i].name}`;
+      this.bookInfoAuthor.textContent = `By: ${myLibrary[i].author}`;
+      this.bookInfoPages.textContent = `Pages: ${myLibrary[i].pages}`;
+    }
+    this.BookShelf.appendChild(this.bookInfo);
+  }
+
+  adjustBooksId(deletedBookId) {
+    const divs = document.querySelectorAll(".book");
+
+    if (divs.length > 0) {
+      divs.forEach(div => {
+        if (div.id > deletedBookId) {
+          const currentId = parseInt(div.id.match(/\d+/)[0]);
+          div.id = div.id.replace(currentId, currentId - 1);
+        }
+      });
+    }
+  }
+
+  removeBook() {
+    this.BookShelf.addEventListener("click", event => {
+      if (event.target.classList.contains("deleteButton")) {
+        const arrayIndex = Number(event.target.parentElement.id);
+        myLibrary.splice(arrayIndex, 1);
+        event.target.parentElement.remove();
+        this.adjustBooksId(arrayIndex);
+      }
+    })
+  } 
+
+  modifyToggleButton() {
+    this.BookShelf.addEventListener("click", event => {
+      if (event.target.classList.contains("toggleButton")) {
+        const bookIndex = Number(
+          event.target.parentElement.parentElement.parentElement.id
+        );
+        if (event.target.checked === true) {
+          myLibrary[bookIndex].read = "yes";
+          event.target.parentElement.parentElement.parentElement.classList.add(
+            "alreadyRead"
+          );
+        } else {
+          myLibrary[bookIndex].read = "no";
+          event.target.parentElement.parentElement.parentElement.classList.remove(
+            "alreadyRead"
+          );
+        }
+      }
+    })
+  }
+
+  activateToggleButton() {
+    if (myLibrary[myLibrary.length - 1].read === "yes") {
+      const checkbox =  document.querySelector(`.toggle${myLibrary.length - 1}`);
+      console.log(checkbox, 'mama gostoso putaaaaaaaaaa');
+      this.bookInfo.classList.add("alreadyRead");
+      checkbox.checked = true;
+    }
+  }
+}
 
 
 const catalog = new BookCatalog();
