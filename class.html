@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./class.js" defer></script>
+    <title>Library</title>
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <div class="header">
+        <h2>myLibrary</h2>
+      </div>
+      <div class="main-content">
+        <button id="show-form-btn">Add Book</button>
+        <div class="form-container">
+          <form action="" id="myForm">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" placeholder="Title" required/>
+            <label for="author">Author</label>
+            <input type="text" name="author" id="author" placeholder="Author" required/>
+            <label for="pages">Number of pages</label>
+            <input type="number" name="pages" id="pages" placeholder="Number of pages" required/>
+            <p>Have you read the book already?</p>
+            <label for="readYes">Yes</label>
+            <input type="radio" name="read" id="readYes" value="yes" required/>
+            <label for="readNo">No</label>
+            <input type="radio" name="read" id="readNo" value="no" required/>
+            <button type="submit">Add</button>
+            <button id="closeForm">Cancel</button>
+          </form>
+        </div>
+        <div id="book-shelf"></div>
+      </div>
+    </div>
+  </body>
+</html>
