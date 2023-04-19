@@ -1,5 +1,6 @@
 /* eslint-disable max-classes-per-file */
 const myLibrary = [];
+const bookShelf = document.querySelector("#book-shelf");
 
 class Book {
   constructor(name, author, pages, read) {
@@ -107,7 +108,7 @@ class BookCatalog {
 
     this.createToggleButton();
     this.putBookOnDisplay();
-    this.removeBook();
+    // this.removeBook();
     this.modifyToggleButton();
     this.adjustBooksId();
     this.activateToggleButton();
@@ -160,11 +161,15 @@ class BookCatalog {
     this.BookShelf.addEventListener("click", event => {
       if (event.target.classList.contains("deleteButton")) {
         const arrayIndex = Number(event.target.parentElement.id);
-        myLibrary.splice(arrayIndex, 1);
+        const removed = myLibrary.splice(arrayIndex, 1);
         event.target.parentElement.remove();
         this.adjustBooksId(arrayIndex);
+        console.log(removed);
+        
+        console.log(arrayIndex);
+
       }
-    })
+    })  
   } 
 
   modifyToggleButton() {
@@ -189,9 +194,9 @@ class BookCatalog {
   }
 
   activateToggleButton() {
-    if (myLibrary[myLibrary.length - 1].read === "yes") {
-      const checkbox =  document.querySelector(`.toggle${myLibrary.length - 1}`);
-      console.log(checkbox, 'mama gostoso putaaaaaaaaaa');
+    if (myLibrary[this.libraryLength - 1].read === "yes") {
+      const checkbox =  document.querySelector(`.toggle${this.libraryLength - 1}`);
+
       this.bookInfo.classList.add("alreadyRead");
       checkbox.checked = true;
     }
@@ -201,3 +206,16 @@ class BookCatalog {
 
 const catalog = new BookCatalog();
 catalog.manageForm();
+
+bookShelf.addEventListener("click", event => {
+  if (event.target.classList.contains("deleteButton")) {
+    const arrayIndex = Number(event.target.parentElement.id);
+    const removed = myLibrary.splice(arrayIndex, 1);
+    event.target.parentElement.remove();
+    catalog.adjustBooksId(arrayIndex);
+    console.log(removed);
+    
+    console.log(arrayIndex);
+
+  }
+})  

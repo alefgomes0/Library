@@ -137,12 +137,17 @@ div > .book.alreadyRead {
   appearance: none;
   margin: 0;
   padding: 0;
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   justify-self: end;
   color: rgb(187, 11, 11);
   border-radius: 50%;
-  background-color: none;
+  background-color: #e6dddd
+}
+
+.deleteButton:hover {
+  background-color: #fff;
+  color: rgb(203, 41, 41);
 }
 
 .button-container {
@@ -159,7 +164,7 @@ div > .book.alreadyRead {
   transition: left 0.2s ease;
 }
 
-/* The switch - the box around the slider */
+
 .switch {
   position: relative;
   display: inline-block;
@@ -168,14 +173,14 @@ div > .book.alreadyRead {
   margin-left: 20px;
 }
 
-/* Hide default HTML checkbox */
+
 .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-/* The slider */
+
 .slider {
   position: absolute;
   cursor: pointer;
@@ -214,7 +219,6 @@ input:checked + .slider:before {
   transform: translateX(26px);
 }
 
-/* Rounded sliders */
 .slider.round {
   border-radius: 34px;
 }
